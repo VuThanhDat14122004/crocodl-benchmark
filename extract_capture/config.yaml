@@ -1,0 +1,5 @@
+capture_dir: /home/vuthanhdat/VisualLocalization/crocodl-benchmark/capture
+capture_subset_dir: /home/vuthanhdat/VisualLocalization/crocodl-benchmark/capture_cv
+
+map_ep: 0.2     # map extraction percentage
+query_ep: 0.01   # map extraction percentage

@@ -1,6 +1,6 @@
 outputs/
 data/
-external/
+# external/
 raybender/
 anonymization/
 
@@ -119,3 +119,14 @@ test_reports
 # vscode
 .vscode/settings.json
 .vscode/launch.json
+
+# images
+*.png
+*.jpg
+*.jpeg
+
+# logs
+*.log
+
+# txt
+*.txt

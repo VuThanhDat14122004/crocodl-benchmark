@@ -25,7 +25,7 @@ if [ -z "$CAPTURE_DIR" ]; then
 fi
 
 # LOCATIONS=("HYDRO" "SUCCULENT")
-LOCATIONS=("SUCCULENT")
+LOCATIONS=("HYDRO")
 OUTPUT_DIR="benchmarking_salad"
 QUERIES_FILE="keyframes_pruned_subsampled.txt"
 LOCAL_FEATURE_METHOD="superpoint"
