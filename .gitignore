@@ -1,6 +1,6 @@
 outputs/
 data/
-# external/
+external/hloc/outputs
 raybender/
 anonymization/
 
