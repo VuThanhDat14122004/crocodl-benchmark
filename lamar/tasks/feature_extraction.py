@@ -2,6 +2,8 @@ import logging
 from copy import deepcopy
 import numpy as np
 
+# from ...external.hloc.hloc import extract_features
+
 from hloc import extract_features
 
 from ..utils.capture import list_images_for_session
@@ -15,7 +17,9 @@ class FeatureExtractionPaths:
         self.root = root
         self.workdir = root / 'extraction' / session_id / config['name']
         self.features = self.workdir / 'features.h5'
+        self.features_raw = self.workdir / 'feature_raw.h5'
         self.config = self.workdir / 'configuration.json'
+        self.dict_keypoints_index = self.workdir / 'dict_keypoints_index.h5'
 
 
 class FeatureExtraction:
@@ -26,7 +30,7 @@ class FeatureExtraction:
                 'model': {
                     'name': 'superpoint',
                     'nms_radius': 3,
-                    'max_keypoints': 2048,
+                    'max_keypoints': 4096,
                 },
                 'preprocessing': {
                     'grayscale': True,
@@ -106,25 +110,9 @@ class FeatureExtraction:
                 },
             }
         },
-        ## feature extraction của RoMa
-        'roma': {
-            'name': 'roma',
-            'hloc': {
-                'model': {
-                    'name': 'roma',
-                    'nms_radius': 3,
-                    'max_keypoints': 4096,
-                },
-                'preprocessing': {
-                    'grayscale': False,
-                    'resize_max': 700,
-                },
-            },
-        },
-        ## feature extraction của RoMa
     }
 
-    def __init__(self, outputs, capture, session_id, config, query_keys=None, overwrite=False):
+    def __init__(self, outputs, capture, session_id, config, query_keys=None, overwrite=False, is_map=True):
         self.config = config = deepcopy(config)
         self.session_id = session_id
         self.paths = FeatureExtractionPaths(outputs, config, session_id)
@@ -135,15 +123,27 @@ class FeatureExtraction:
         _, names, image_root = list_images_for_session(capture, session_id, query_keys)
         names = np.unique(names)
         # return # test
-        extract_features.main(
-            config['hloc'],
-            image_root,
-            feature_path=self.paths.features,
-            image_list=names,
-            as_half=True,
-            overwrite=overwrite,
-        )
-
+        if is_map:
+            extract_features.main(
+                config['hloc'],
+                image_root,
+                feature_path=self.paths.features,
+                feature_raw_path=self.paths.features_raw,
+                image_list=names,
+                as_half=True,
+                overwrite=overwrite,
+                dict_keypoints_index=self.paths.dict_keypoints_index
+            )
+        else:
+            extract_features.main(
+                config['hloc'],
+                image_root,
+                feature_path=self.paths.features,
+                image_list=names,
+                as_half=True,
+                overwrite=overwrite,
+                dict_keypoints_index=self.paths.dict_keypoints_index
+            )
         write_config(config, self.paths.config)
 
 

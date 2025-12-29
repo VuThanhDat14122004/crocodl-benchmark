@@ -78,33 +78,46 @@ class FeatureMatching:
                 },
             }
         },
-        ## matcher của RoMa
-        'roma': {
-            'name': 'roma',
-            'hloc': {
-                'model': {
-                    'name': 'roma',
-                    'weights': 'outdoor',
-                    'sinkhorn_iterations': 5,
-                },
-            },
-        },
         # lightglue_gim matcher
         'lightglue_gim': {
             'name': 'lightglue_gim',
             'hloc': {
                 'model': {
                     'name': 'lightglue_gim',
+                    'features': 'superpoint',
                 },
             },
         },
+        ## lightglue+roma matcher
+        'lightglue+roma': {
+            'name': 'lightglue+roma',
+            'hloc': {
+                'output': 'matches-superglue-roma',
+                'model': {
+                    'name': 'roma',
+                    'max_keypoints': 4096,
+                    'weight_mode': 'indoor',
+                    'resize_max': 1024,
+                    'dist_threshold': 5.0,
+                },
+                'model2': {
+                    'name': 'lightglue_gim',
+                    'features': 'superpoint',
+                    'preprocessing': {
+                        'resize_max': 1024,
+                        'resize_force': True,
+                    },
+                }
+            }
+        }
     }
+                     
 
     def __init__(self, outputs, capture, query_id, ref_id, config,
                  pair_selection: PairSelection,
                  extraction: FeatureExtraction,
                  extraction_ref: Optional[FeatureExtraction] = None,
-                 overwrite=False):
+                 overwrite=False, is_query_map=False,feature_path_raw_ref: Optional[str]=None):
         
         extraction_ref = extraction_ref or extraction
         if extraction.config['name'] != extraction_ref.config['name']:
@@ -134,14 +147,42 @@ class FeatureMatching:
         if not same_configs(config, self.paths.config):
             logger.warning('Existing matches will be overwritten.')
             overwrite = True
-
-        match_features.main(
+        print(f'\n----- overwrite matching: {overwrite} -----\n')
+        # overwrite = False
+        if is_query_map and 'roma' in config['hloc']['model']['name']:
+            print(f'start query-map roma matching...')
+            match_features.main(
+                config['hloc'],
+                pair_selection.paths.pairs_hloc,
+                extraction.paths.features,
+                matches=self.paths.matches,
+                features_ref=extraction_ref.paths.features,
+                overwrite=overwrite,
+                dict_keypoints_index_query=extraction.paths.dict_keypoints_index,
+                dict_keypoints_index_map=extraction_ref.paths.dict_keypoints_index,
+                is_query_map_match=True,
+                feature_path_raw_ref=feature_path_raw_ref
+            )
+        elif 'roma' in config['hloc']['model']['name']:
+            print(f'start map-map roma matching...')
+            match_features.main(
+                config['hloc'],
+                pair_selection.paths.pairs_hloc,
+                extraction.paths.features,
+                matches=self.paths.matches,
+                features_ref=extraction_ref.paths.features,
+                overwrite=overwrite,
+                dict_keypoints_index_query=extraction.paths.dict_keypoints_index,
+                dict_keypoints_index_map=extraction_ref.paths.dict_keypoints_index,
+            )
+        else:
+            match_features.main(
             config['hloc'],
             pair_selection.paths.pairs_hloc,
             extraction.paths.features,
             matches=self.paths.matches,
             features_ref=extraction_ref.paths.features,
             overwrite=overwrite,
-        )
+            )
 
         write_config(config, self.paths.config)

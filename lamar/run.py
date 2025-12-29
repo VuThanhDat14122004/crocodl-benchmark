@@ -13,7 +13,7 @@ from lamar.utils.capture import (
     rig_list_to_image_list, rig_poses_to_image_poses)
 
 from lamar import logger
-
+import time
 
 def run(outputs: Path,
         capture: Capture,
@@ -87,39 +87,35 @@ def run(outputs: Path,
             capture, query_id, query_list, sequence_length_seconds)
         image_keys = keys_from_chunks(query_chunks)
 
-
-    #local_feature_extractor: extract feature của tất cả các image trong map (ios_map)
+    st = time.time()
     extraction_map = FeatureExtraction(outputs, capture, ref_id, configs['extraction'])
+    en = time.time()
+    print(f"Extract map time = {(en-st):.4f} secs.")
 
-    '''
-    Tạo pairs:
-        return:
-            retrieval: dict {key: path_querry, value: list[path_retrieve]}
-            pairs:list[(path_querry, path_retrieve)]
-    '''
+    st = time.time()
     pairs_map = PairSelection(outputs, capture, ref_id, ref_id, configs['pairs_map'])
-    print(f"Number of pairs in pairs map: {len(pairs_map.pairs)}") ## test 59730 pairs
-    
-    
-    print(pairs_map) ## test
-    print("checkk \n\n\n")
-    exit() ## test
-    print("????\n\n\n")
-    # file (pairs, pred)
+    en = time.time()
+    print(f"Select map time = {(en-st):.4f} secs.")
+
+    st = time.time()
     matching_map = FeatureMatching(
         outputs, capture, ref_id, ref_id, configs['matching'], pairs_map, extraction_map)
+    en = time.time()
+    print(f"Match map time = {(en-st):.4f} secs.")
+    # mapping = Mapping(
+    #     configs['mapping'], outputs, capture, ref_id, extraction_map, matching_map)
 
-
-    mapping = Mapping(
-        configs['mapping'], outputs, capture, ref_id, extraction_map, matching_map)
-
+    st = time.time()
     extraction_query = FeatureExtraction(
-        outputs, capture, query_id, configs['extraction'], image_keys)
-
+        outputs, capture, query_id, configs['extraction'], image_keys, is_map=False)
+    en = time.time()
+    print(f"Extract query time = {(en-st):.4f} secs.")
+    
     if is_sequential:
         query_list, query_chunks = avoid_duplicate_keys_in_chunks(
             session_q, query_list, query_chunks)
         T_c2w_gt = session_q.proc.alignment_trajectories
+        mapping = Mapping(configs['mapping'], outputs, capture, ref_id, extraction_map, matching_map)
         chunk_alignment = ChunkAlignment(
             configs, outputs, capture, query_id, extraction_query, mapping, query_chunks,
             sequence_length_seconds)
@@ -131,18 +127,37 @@ def run(outputs: Path,
         T_c2w_gt = session_q.proc.alignment_trajectories
         if T_c2w_gt and is_rig and not do_rig:
             T_c2w_gt = rig_poses_to_image_poses(rig_query_list, T_c2w_gt, session_q)
+        st = time.time()
         pairs_loc = PairSelection(
             outputs, capture, query_id, ref_id, configs['pairs_loc'], query_list,
             query_poses=T_c2w_gt)
+        en = time.time()
+        print(f"Select query time = {(en-st):.4f} secs.")
+
+        st = time.time()
         matching_query = FeatureMatching(
             outputs, capture, query_id, ref_id, configs['matching_query'],
-            pairs_loc, extraction_query, extraction_map)
+            pairs_loc, extraction_query, extraction_map, is_query_map=True, feature_path_raw_ref = extraction_map.paths.features_raw)
+        en = time.time()
+        print(f"Match query time = {(en-st):.4f} secs.")
+
+        st = time.time()
+        mapping = Mapping(configs['mapping'], outputs, capture, ref_id, extraction_map, matching_map)
+        en = time.time()
+
+        print(f"mapping time = {(en-st):.4f} secs.")
+
+        st = time.time()
         pose_estimation = PoseEstimation(
             configs['poses'], outputs, capture, query_id,
             extraction_query, matching_query, mapping, query_list)
+        en = time.time()
+        print(f"pose estimation time = {(en-st):.4f} secs.")
         if T_c2w_gt:
+            print(f'start evaluating pose estimation...')
             results = pose_estimation.evaluate(T_c2w_gt)
         else:
+            print(f'start saving pose estimation results...')
             results = str(pose_estimation.paths.poses)
 
     return results
@@ -175,9 +190,6 @@ if __name__ == '__main__':
     scene = args.pop("scene")
     args['capture'] = Capture.load(args.pop('captures') / scene)
     args['outputs'] = args['outputs'] / scene
-    run(**args)
-    print("checkk \n\n\n")
-    exit()  # test
     results_ = run(**args)
 
     if isinstance(results_, str):

@@ -1,11 +1,11 @@
 You are running with parameters: 
-  Capture: /home/vuthanhdat/VisualLocalization/crocodl-benchmark/capture/
-  Output: benchmarking_salad
-  Locations: HYDRO SUCCULENT
+  Capture: /home/robotics/VisualLocalization/capture
+  Output: benchmarking_ps
+  Locations: HYDRO
   Queries file: keyframes_pruned_subsampled.txt
   Local feature method: superpoint
-  Matching method: lightglue
+  Matching method: lightglue_gim
   Global feature method: megaloc
-  Reference devices: ios hl spot
-  Query devices: ios hl spot
-Do you want to continue? (y/n): Execution aborted.
+  Reference devices: ios
+  Query devices: ios
+Do you want to continue? (y/n): 

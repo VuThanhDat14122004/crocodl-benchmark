@@ -76,6 +76,7 @@ class PoseEstimation:
         if extraction.config['name'] != mapping.extraction.config['name']:
             raise ValueError('Mapping and query features are different:'
                              f'{mapping.extraction.config} vs {extraction.config}')
+        print(f"query_id: {query_id}, extraction.session_id: {extraction.session_id}, matching.query_id: {matching.query_id}, mapping.session_id: {mapping.session_id}, matching.ref_id: {matching.ref_id}")
         assert query_id == extraction.session_id
         assert query_id == matching.query_id
         ref_id = mapping.session_id

@@ -1,9 +1,18 @@
 outputs/
 data/
-external/
+external/ceres-solver-v2.1.0
+external/colmap_main
 raybender/
 anonymization/
 
+evaluate/
+apps/
+visualization/
+pipelines/
+scantools/
+scantools_scripts/
+scantools_scripts/
+assets/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -25,16 +25,16 @@ if [ -z "$CAPTURE_DIR" ]; then
 fi
 
 # LOCATIONS=("HYDRO" "SUCCULENT")
-LOCATIONS=("SUCCULENT")
-OUTPUT_DIR="benchmarking_salad"
+LOCATIONS=("HYDRO")
+OUTPUT_DIR="benchmarking_lg+rm_dat"
 QUERIES_FILE="keyframes_pruned_subsampled.txt"
 LOCAL_FEATURE_METHOD="superpoint"
 # LOCAL_FEATURE_METHOD="roma"
-MATCHING_METHOD="lightglue_gim"
+MATCHING_METHOD="lightglue+roma"
 # MATCHING_METHOD="roma"
 GLOBAL_FEATURE_METHOD="megaloc"
 # DEVICES_REF=("ios" "hl" "spot")
-DEVICES_REF=("ios")
+DEVICES_REF=("spot")
 # DEVICES_QUERY=("ios" "hl" "spot")
 DEVICES_QUERY=("ios")
 

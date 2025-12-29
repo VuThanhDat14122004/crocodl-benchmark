@@ -24,14 +24,31 @@ if [ -z "$CAPTURE_DIR" ]; then
   exit 1
 fi
 
-LOCATIONS=("HYDRO")
-OUTPUT_DIR="benchmarking_ps"
+DOCKER_SHARE_RAM=8g
+DOCKER_GPU="--gpus all"  # empty string or "--gpus all"
+
+LAMAR_SRC="./lamar"
+HLOC_SRC="./external/hloc"
+MOUNT_LAMAR_SRC=""
+MOUNT_HLOC_SRC=""
+if [ -d "$LAMAR_SRC" ]; then
+  MOUNT_LAMAR_SRC="-v $LAMAR_SRC:/lamar/lamar"
+fi
+if [ -d "$HLOC_SRC" ]; then
+  MOUNT_HLOC_SRC="-v $HLOC_SRC:/external/hloc"
+fi
+
+LOCATIONS=("HYDRO" "SUCCULENT")
+# LOCATIONS=("ARCHE_D2")
+OUTPUT_DIR="dat/ios_spot_benchmarking_lg+roma_dat"
 QUERIES_FILE="keyframes_pruned_subsampled.txt"
 LOCAL_FEATURE_METHOD="superpoint"
-MATCHING_METHOD="lightglue"
-GLOBAL_FEATURE_METHOD="netvlad"
-DEVICES_REF=("ios" "hl" "spot")
-DEVICES_QUERY=("ios" "hl" "spot")
+MATCHING_METHOD="lightglue+roma"
+GLOBAL_FEATURE_METHOD="megaloc"
+# DEVICES_REF=("ios" "hl" "spot")
+DEVICES_REF=("spot")
+# DEVICES_QUERY=("ios" "hl" "spot")
+DEVICES_QUERY=("ios")
 
 echo "You are running with parameters: "
 echo "  Capture: ${CAPTURE_DIR}"
@@ -44,12 +61,12 @@ echo "  Global feature method: ${GLOBAL_FEATURE_METHOD}"
 echo "  Reference devices: ${DEVICES_REF[@]}"
 echo "  Query devices: ${DEVICES_QUERY[@]}"
 
-read -p "Do you want to continue? (y/n): " answer
+# read -p "Do you want to continue? (y/n): " answer
 
-if [[ ! "$answer" =~ ^[Yy]$ ]]; then
-    echo "Execution aborted."
-    exit 1
-fi
+# if [[ ! "$answer" =~ ^[Yy]$ ]]; then
+#     echo "Execution aborted."
+#     exit 1
+# fi
 
 for LOCATION in "${LOCATIONS[@]}"; do
 
@@ -70,9 +87,13 @@ for LOCATION in "${LOCATIONS[@]}"; do
       fi
 
       docker run --rm \
-        -v "$OUTPUT_DIR":/data/output_dir \
+        $DOCKER_GPU \
+        --shm-size="$DOCKER_SHARE_RAM" \
+        $MOUNT_LAMAR_SRC \
+        $MOUNT_HLOC_SRC \
+        -v "$OUTPUT_DIR_LOCATION":/data/output_dir \
         -v "$CAPTURE":/data/capture_dir \
-        croco:lamar \
+        croco:nam \
         python -m lamar.run \
         --scene "$SCENE" \
         --ref_id "${ref}_map" \

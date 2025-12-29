@@ -10,7 +10,7 @@ source ${root_folder}/scripts/load_env.sh
 sudo ${root_folder}/scripts/install_ceres_solver.sh
 
 # Colmap.
-sudo ${root_folder}/scripts/install_colmap.sh
+# sudo ${root_folder}/scripts/install_colmap.sh
 
 # HLoc.
 ${root_folder}/scripts/install_hloc.sh

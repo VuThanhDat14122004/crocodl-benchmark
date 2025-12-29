@@ -15,15 +15,15 @@ if [ -z "$CAPTURE_DIR" ]; then
   exit 1
 fi
 
-BENCHMARKING_DIR="/benchmarking_ps"
+BENCHMARKING_DIR="dat/ios_spot_benchmarking_lg+roma_dat"
 DESCRIPTION_FILE="${CAPTURE_DIR}/codabench/desc.txt"
 OUTPUT_DIR="${CAPTURE_DIR}/codabench"
 LOCAL_FEATURE_METHOD="superpoint"
-MATCHING_METHOD="lightglue"
-GLOBAL_FEATURE_METHOD="netvlad-10"
-SCENES=("hydro" "succu")
-DEVICES_MAP=("ios" "hl" "spot")
-DEVICES_QUERY=("ios" "hl" "spot")
+MATCHING_METHOD="lightglue+roma"
+GLOBAL_FEATURE_METHOD="megaloc"
+SCENES=("hydro")
+DEVICES_MAP=("spot")
+DEVICES_QUERY=("ios")
 
 echo "You are running with parameters: "
 echo "  Capture: ${CAPTURE_DIR}"
@@ -48,7 +48,7 @@ echo "Running combine_results_crocodl inside Docker ..."
 echo "docker run --rm"
 echo "-v "$CAPTURE_DIR":/data/capture_dir"
 echo "-v "$DESCRIPTION_FILE":/data/capture_dir/codabench/desc.txt"
-echo "croco:lamar"
+echo "croco:nam"
 echo "python3 -m lamar.combine_results_crocodl \\"
 echo "  --description_path /data/capture_dir/codabench/desc.txt \\"
 
@@ -69,7 +69,7 @@ for scene in "${SCENES[@]}"; do
       else
         device_type="rig"
       fi
-      file_path="${LOCATION_PATH}/${BENCHMARKING_DIR}/pose_estimation/${query_device}_query/${map_device}_map/${LOCAL_FEATURE_METHOD}/${MATCHING_METHOD}/${GLOBAL_FEATURE_METHOD}/triangulation/${device_type}/poses.txt"
+      file_path="${LOCATION_PATH}${BENCHMARKING_DIR}/pose_estimation/${query_device}_query/${map_device}_map/${LOCAL_FEATURE_METHOD}/${MATCHING_METHOD}/${GLOBAL_FEATURE_METHOD}/triangulation/${device_type}/poses.txt"
 
       echo "  $var_name \"$file_path\" \\"
       CMD+=("${var_name}" "${file_path}")
@@ -84,7 +84,8 @@ echo "  --output_dir \"$OUTPUT_DIR\""
 docker run --rm \
   -v "$CAPTURE_DIR":/data/capture_dir \
   -v "$DESCRIPTION_FILE":/data/capture_dir/codabench/desc.txt \
-  croco:lamar \
+  -v "/home/robotics/VisualLocalization/DAT/crocodl-benchmark/lamar:/lamar/lamar/" \
+  croco:nam \
   "${CMD[@]}"
 
 echo "Done, combine_results_crocodl completed."

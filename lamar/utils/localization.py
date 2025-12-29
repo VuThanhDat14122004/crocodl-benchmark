@@ -68,7 +68,8 @@ def estimate_camera_pose(query: str, camera: Camera,
                          return_covariance: bool) -> Pose:
     matches_2d3d = recover_matches(query, ref_key_names)
     keypoint_noise = matches_2d3d['keypoint_noise']
-
+    # if keypoint_noise is None:##
+    #         keypoint_noise = 1.2##
     ret = pycolmap.absolute_pose_estimation(
         matches_2d3d['kp_q'], matches_2d3d['p3d'],
         camera.asdict, pnp_error_multiplier * keypoint_noise,
