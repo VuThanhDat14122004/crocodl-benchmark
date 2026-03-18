@@ -137,4 +137,5 @@ test_reports
 
 # logs
 *.log
+*.safetensors
 
