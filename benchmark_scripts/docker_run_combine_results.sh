@@ -15,7 +15,7 @@ if [ -z "$CAPTURE_DIR" ]; then
   exit 1
 fi
 
-BENCHMARKING_DIR="dat/ios_spot_benchmarking_lg+roma_dat"
+BENCHMARKING_DIR="/hydro_ios_spot_benchmarking_lg+roma_dat"
 DESCRIPTION_FILE="${CAPTURE_DIR}/codabench/desc.txt"
 OUTPUT_DIR="${CAPTURE_DIR}/codabench"
 LOCAL_FEATURE_METHOD="superpoint"

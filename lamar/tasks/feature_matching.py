@@ -95,13 +95,13 @@ class FeatureMatching:
                 'output': 'matches-superglue-roma',
                 'model': {
                     'name': 'roma',
-                    'max_keypoints': 4096,
+                    'max_keypoints': 1024,
                     'weight_mode': 'indoor',
                     'resize_max': 1024,
-                    'dist_threshold': 5.0,
+                    'dist_threshold': 3.0,
                 },
                 'model2': {
-                    'name': 'lightglue_gim',
+                    'name': 'lightglue',
                     'features': 'superpoint',
                     'preprocessing': {
                         'resize_max': 1024,
@@ -149,6 +149,7 @@ class FeatureMatching:
             overwrite = True
         print(f'\n----- overwrite matching: {overwrite} -----\n')
         # overwrite = False
+        # return # test 17-3
         if is_query_map and 'roma' in config['hloc']['model']['name']:
             print(f'start query-map roma matching...')
             match_features.main(

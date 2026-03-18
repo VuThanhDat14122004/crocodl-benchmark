@@ -38,9 +38,9 @@ if [ -d "$HLOC_SRC" ]; then
   MOUNT_HLOC_SRC="-v $HLOC_SRC:/external/hloc"
 fi
 
-LOCATIONS=("HYDRO" "SUCCULENT")
-# LOCATIONS=("ARCHE_D2")
-OUTPUT_DIR="dat/ios_spot_benchmarking_lg+roma_dat"
+# LOCATIONS=("HYDRO" "SUCCULENT")
+LOCATIONS=("HYDRO")
+OUTPUT_DIR="hydro_ios_spot_benchmarking_lg+roma_dat"
 QUERIES_FILE="keyframes_pruned_subsampled.txt"
 LOCAL_FEATURE_METHOD="superpoint"
 MATCHING_METHOD="lightglue+roma"

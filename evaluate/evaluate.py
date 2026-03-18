@@ -15,7 +15,7 @@ from collections import defaultdict
 # Default configuration (will be overridden by command line arguments)
 DEFAULT_DEVICES = ['ios', 'hl', 'spot']
 DEFAULT_SCENES = ['hydro', 'succu']
-DEFAULT_BENCHMARKING_DIR = 'benchmarking_all_ml_sp_lg'
+DEFAULT_BENCHMARKING_DIR = 'dat3/succu_ios_spot_benchmarking_lg+roma_dat'
 
 def load_poses_file(file_path):
     """Load poses from trajectories.txt or poses.txt file."""

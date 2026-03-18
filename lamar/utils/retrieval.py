@@ -106,13 +106,16 @@ def fused_retrieval(root, capture, query_id, ref_id, config, names_q, names_r, k
     descs_q = []
     descs_r = []
     methods = config.method['retrieval'] if do_fusion else [config.method]
+    print(f"\n------------method {methods} --------\n")
     for method in methods:
-        features_q = RetrievalFeatureExtraction(root, capture, query_id, method, keys_q)
+        print(f"\n ---------- qr_id{query_id, ref_id}----\n")
+        features_q = RetrievalFeatureExtraction(root, capture, query_id, method, keys_q, is_map=False)
         features_r = RetrievalFeatureExtraction(root, capture, ref_id, method)
         device = 'cpu'
         descs_q.append(get_descriptors(features_q.paths.features, names_q, device))
         descs_r.append(get_descriptors(features_r.paths.features, names_r, device))
-
+    print(f"\n-------len descs_q {descs_q}---------\n")
+    print(f"\n-------len descs_r {descs_r}---------\n")
     batch_size = 1024
     pairs_ij = []
     num_q = len(names_q)

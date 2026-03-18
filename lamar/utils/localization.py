@@ -32,7 +32,7 @@ def recover_matches_2d3d(query: str, ref_key_names: List[Tuple[KeyType, str]],
     for idx, (ref_key, matches) in enumerate(zip(ref_keys, all_matches)):
         if len(matches) == 0:
             continue
-        valid, p3ds, p3d_ids = mapping.get_points3D(ref_key, matches[:, 1])
+        valid, p3ds, p3d_ids = mapping.get_points3D(ref_key, matches[:, 1]) # lấy thông tin 3d của các keypoint đã được match trong ảnh map
         matches = matches[valid]
         num_matches += len(matches)
 
@@ -44,7 +44,7 @@ def recover_matches_2d3d(query: str, ref_key_names: List[Tuple[KeyType, str]],
             # avoid duplicate observations
             if p3d_id != -1 and p3d_id in p2d_to_p3d[i]:
                 continue
-            p2d_to_p3d[i].append(p3d_id)
+            p2d_to_p3d[i].append(p3d_id) # 1 kpt trong 1 ảnh query có thể ứng với nhiều điểm 3d trong nhiều ảnh map
             p2d_q.append(p2d[i])
             p3d.append(xyz)
             indices.append(idx)
@@ -70,6 +70,10 @@ def estimate_camera_pose(query: str, camera: Camera,
     keypoint_noise = matches_2d3d['keypoint_noise']
     # if keypoint_noise is None:##
     #         keypoint_noise = 1.2##
+
+    # #add for benchmark, only use in benchmark
+    # keypoint_noise = 0.5 # only for test 17-3
+
     ret = pycolmap.absolute_pose_estimation(
         matches_2d3d['kp_q'], matches_2d3d['p3d'],
         camera.asdict, pnp_error_multiplier * keypoint_noise,

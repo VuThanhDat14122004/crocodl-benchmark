@@ -16,17 +16,17 @@ if [ -z "$CAPTURE_DIR" ]; then
 fi
 
 # Configuration matching benchmark script structure
-BENCHMARKING_DIR="benchmarking_results"
+BENCHMARKING_DIR="dat3/succu_ios_spot_benchmarking_lg+roma_dat"
 OUTPUT_DIR="${CAPTURE_DIR}/evaluation_results"
 LOCAL_FEATURE_METHOD="superpoint"
-MATCHING_METHOD="lightglue_gim"
+MATCHING_METHOD="lightglue+roma"
 GLOBAL_FEATURE_METHOD="megaloc"
 # SCENES=("hydro" "succu")
-SCENES=("hydro")
-DEVICES_MAP=("ios")
+SCENES=("arche_d2")
+DEVICES_MAP=("spot")
 DEVICES_QUERY=("ios")
-POSITION_THRESHOLD=20.0
-ROTATION_THRESHOLD=100.0
+POSITION_THRESHOLD=0.5
+ROTATION_THRESHOLD=5
 PYTHON_SCRIPT="${SCRIPT_DIR}/evaluate.py"
 
 # Function to display usage

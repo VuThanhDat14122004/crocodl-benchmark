@@ -297,7 +297,6 @@ def run(outputs: Path,
         outputs, capture, query_id, configs['extraction'], image_keys, is_map=False)
     en = time.time()
     print(f"Extract query time = {(en-st):.4f} secs.")
-    
     if is_sequential:
         query_list, query_chunks = avoid_duplicate_keys_in_chunks(
             session_q, query_list, query_chunks)
@@ -329,12 +328,14 @@ def run(outputs: Path,
         print(f"Match query time = {(en-st):.4f} secs.")
 
         st = time.time()
+        print("start mapping")
         mapping = Mapping(configs['mapping'], outputs, capture, ref_id, extraction_map, matching_map)
         en = time.time()
 
         print(f"mapping time = {(en-st):.4f} secs.")
 
         st = time.time()
+        print("start pose estimation")
         pose_estimation = PoseEstimation(
             configs['poses'], outputs, capture, query_id,
             extraction_query, matching_query, mapping, query_list)

@@ -115,7 +115,10 @@ class PairSelection:
         keys_r, names_r, _ = list_images_for_session(capture, self.ref_id)
         # Prevent self-matching
         discard = np.array(names_q)[:, None] == np.array(names_r)[None]
+        print(f"\n --------len key q: {len(keys_q)}")
+        print(f"\n ---------len key r: {len(keys_r)}")
         if config.filter_frustum.do:
+            
             logger.info('Filtering pairs by frustums.')
             discard |= filter_by_frustum(
                 session_q, session_r, keys_q, keys_r, poses_q, poses_r, config.filter_frustum)
@@ -124,6 +127,7 @@ class PairSelection:
             discard |= filter_by_radio(
                 session_q, session_r, keys_q, keys_r, config.filter_radio)
         if config.filter_pose.do:
+            print("\n --------- gooo poses --------------\n")
             logger.info('Filtering pairs by poses.')
             discard |= filter_by_pose(
                 session_q, session_r, keys_q, keys_r, poses_q, poses_r, config.filter_pose, discard)
@@ -138,7 +142,7 @@ class PairSelection:
             pairs_ij = fused_retrieval(
                 self.paths.root, capture, self.query_id, self.ref_id, config,
                 names_q, names_r, self.query_keys, discard)
-
+        logger.info(f"\n --------------len pair ij {len(pairs_ij)}--------------\n")
         if len(pairs_ij) == 0:
             raise ValueError('No pair found!')
         retrieval = defaultdict(list)

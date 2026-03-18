@@ -277,6 +277,7 @@ def get_matches(matches_path: Path, key_pairs: Iterator[Tuple[str]]) -> List[np.
             if reverse:
                 m = np.flip(m, -1)
             matches.append(m)
+    # nếu trong matches ở đây mà 1 index match với nhiều m[idx] (nhiều index trong ảnh còn lại) thì sao?
     return matches
 
 
