@@ -272,8 +272,18 @@ def get_matches(matches_path: Path, key_pairs: Iterator[Tuple[str]]) -> List[np.
         for k1, k2 in key_pairs:
             pair, reverse = find_pair(fid, k1, k2)
             m = fid[pair]['matches0'].__array__()
-            idx = np.where(m != -1)[0]
-            m = np.stack([idx, m[idx]], -1)
+            # add
+            matches_res = []
+            for ind, keypoint_match in enumerate(m):
+                for ind1, id_match in enumerate(keypoint_match):
+                    if id_match == -1:
+                        continue
+                    matches_res.append([ind, id_match])
+            #
+
+            # idx = np.where(m != -1)[0]
+            # m = np.stack([idx, m[idx]], -1)
+            m = np.array(matches_res)
             if reverse:
                 m = np.flip(m, -1)
             matches.append(m)

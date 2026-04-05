@@ -29,13 +29,18 @@ DOCKER_GPU="--gpus all"  # empty string or "--gpus all"
 
 LAMAR_SRC="./lamar"
 HLOC_SRC="./external/hloc"
+SCANTOOLS_SRC="./scantools"
 MOUNT_LAMAR_SRC=""
 MOUNT_HLOC_SRC=""
+MOUNT_SCANTOOLS_SRC=""
 if [ -d "$LAMAR_SRC" ]; then
   MOUNT_LAMAR_SRC="-v $LAMAR_SRC:/lamar/lamar"
 fi
 if [ -d "$HLOC_SRC" ]; then
   MOUNT_HLOC_SRC="-v $HLOC_SRC:/external/hloc"
+fi
+if [ -d "$SCANTOOLS_SRC" ]; then
+  MOUNT_SCANTOOLS_SRC="-v $SCANTOOLS_SRC:/lamar/scantools"
 fi
 
 # LOCATIONS=("HYDRO" "SUCCULENT")
@@ -43,7 +48,7 @@ LOCATIONS=("HYDRO")
 OUTPUT_DIR="hydro_ios_spot_benchmarking_lg+roma_dat"
 QUERIES_FILE="keyframes_pruned_subsampled.txt"
 LOCAL_FEATURE_METHOD="superpoint"
-MATCHING_METHOD="lightglue+roma"
+MATCHING_METHOD="lightglue+roma1"
 GLOBAL_FEATURE_METHOD="megaloc"
 # DEVICES_REF=("ios" "hl" "spot")
 DEVICES_REF=("spot")
@@ -90,6 +95,7 @@ for LOCATION in "${LOCATIONS[@]}"; do
         $DOCKER_GPU \
         --shm-size="$DOCKER_SHARE_RAM" \
         $MOUNT_LAMAR_SRC \
+        $MOUNT_SCANTOOLS_SRC \
         $MOUNT_HLOC_SRC \
         -v "$OUTPUT_DIR_LOCATION":/data/output_dir \
         -v "$CAPTURE":/data/capture_dir \

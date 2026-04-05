@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 from copy import deepcopy
 
-from hloc import match_features
+from hloc import match_features1, match_features
 
 from .feature_extraction import FeatureExtraction
 from .pair_selection import PairSelection
@@ -97,8 +97,29 @@ class FeatureMatching:
                     'name': 'roma',
                     'max_keypoints': 1024,
                     'weight_mode': 'indoor',
-                    'resize_max': 1024,
+                    'resize_max': 512,
                     'dist_threshold': 3.0,
+                },
+                'model2': {
+                    'name': 'lightglue',
+                    'features': 'superpoint',
+                    'preprocessing': {
+                        'resize_max': 1024,
+                        'resize_force': True,
+                    },
+                }
+            }
+        },
+        'lightglue+roma1': {
+            'name': 'lightglue+roma1',
+            'hloc': {
+                'output': 'matches-superglue-roma',
+                'model': {
+                    'name': 'roma1',
+                    'max_keypoints': 1024,
+                    'weight_mode': 'indoor',
+                    'resize_max': 512,
+                    'dist_threshold': 2.0,
                 },
                 'model2': {
                     'name': 'lightglue',
@@ -149,10 +170,10 @@ class FeatureMatching:
             overwrite = True
         print(f'\n----- overwrite matching: {overwrite} -----\n')
         # overwrite = False
-        # return # test 17-3
+        # return # test 2-4
         if is_query_map and 'roma' in config['hloc']['model']['name']:
             print(f'start query-map roma matching...')
-            match_features.main(
+            match_features1.main(
                 config['hloc'],
                 pair_selection.paths.pairs_hloc,
                 extraction.paths.features,
@@ -166,7 +187,7 @@ class FeatureMatching:
             )
         elif 'roma' in config['hloc']['model']['name']:
             print(f'start map-map roma matching...')
-            match_features.main(
+            match_features1.main(
                 config['hloc'],
                 pair_selection.paths.pairs_hloc,
                 extraction.paths.features,

@@ -14,6 +14,8 @@ KeyType = Tuple[int, str]
 def recover_matches_2d3d(query: str, ref_key_names: List[Tuple[KeyType, str]],
                          mapping, query_features: Path, match_file: Path):
     (p2d,), (noise,) = get_keypoints(query_features, [query])
+    if len(p2d.shape)==3:
+        p2d = p2d.squeeze()
     p2d_to_p3d = defaultdict(list)
     num_matches = 0
 
