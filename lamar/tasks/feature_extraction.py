@@ -122,7 +122,7 @@ class FeatureExtraction:
         logger.info('Extraction local features %s for session %s.', config['name'], session_id)
         _, names, image_root = list_images_for_session(capture, session_id, query_keys)
         names = np.unique(names)
-        # return # test 2-4
+        # return # test 12-4
         if is_map:
             extract_features.main(
                 config['hloc'],

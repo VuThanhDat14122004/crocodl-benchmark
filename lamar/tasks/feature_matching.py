@@ -170,7 +170,7 @@ class FeatureMatching:
             overwrite = True
         print(f'\n----- overwrite matching: {overwrite} -----\n')
         # overwrite = False
-        # return # test 2-4
+        # return # test 12-4
         if is_query_map and 'roma' in config['hloc']['model']['name']:
             print(f'start query-map roma matching...')
             match_features1.main(

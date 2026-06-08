@@ -44,15 +44,13 @@ if [ -d "$SCANTOOLS_SRC" ]; then
 fi
 
 # LOCATIONS=("HYDRO" "SUCCULENT")
-LOCATIONS=("HYDRO")
-OUTPUT_DIR="hydro_ios_spot_benchmarking_lg+roma_dat"
+LOCATIONS=("SUCCULENT")
+OUTPUT_DIR="succu_ios_hl_benchmarking_lg+roma_dat"
 QUERIES_FILE="keyframes_pruned_subsampled.txt"
 LOCAL_FEATURE_METHOD="superpoint"
 MATCHING_METHOD="lightglue+roma1"
 GLOBAL_FEATURE_METHOD="megaloc"
-# DEVICES_REF=("ios" "hl" "spot")
-DEVICES_REF=("spot")
-# DEVICES_QUERY=("ios" "hl" "spot")
+DEVICES_REF=("hl")
 DEVICES_QUERY=("ios")
 
 echo "You are running with parameters: "
