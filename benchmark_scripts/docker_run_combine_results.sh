@@ -15,14 +15,14 @@ if [ -z "$CAPTURE_DIR" ]; then
   exit 1
 fi
 
-BENCHMARKING_DIR="/succu_ios_hl_benchmarking_lg+roma_dat"
+BENCHMARKING_DIR="/succu_ios_spot_benchmarking_lg+dkm_dat"
 DESCRIPTION_FILE="${CAPTURE_DIR}/codabench/desc.txt"
 OUTPUT_DIR="${CAPTURE_DIR}/codabench"
 LOCAL_FEATURE_METHOD="superpoint"
-MATCHING_METHOD="lightglue+roma1"
+MATCHING_METHOD="lightglue+dkm"
 GLOBAL_FEATURE_METHOD="megaloc"
 SCENES=("succu")
-DEVICES_MAP=("hl")
+DEVICES_MAP=("spot")
 DEVICES_QUERY=("ios")
 
 echo "You are running with parameters: "

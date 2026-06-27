@@ -98,7 +98,7 @@ for LOCATION in "${LOCATIONS[@]}"; do
         -v "$OUTPUT_DIR_LOCATION":/data/output_dir \
         -v "$CAPTURE":/data/capture_dir \
         croco:nam \
-        python -m lamar.run \
+        python -m lamar.run1 \
         --scene "$SCENE" \
         --ref_id "${ref}_map" \
         --query_id "${query}_query" \
