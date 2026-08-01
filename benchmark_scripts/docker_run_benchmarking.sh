@@ -45,10 +45,10 @@ fi
 
 # LOCATIONS=("HYDRO" "SUCCULENT")
 LOCATIONS=("SUCCULENT")
-OUTPUT_DIR="succu_ios_spot_benchmarking_lg+dkm_dat"
+OUTPUT_DIR="succu_ios_spot_benchmarking_lg+loftr_dat"
 QUERIES_FILE="keyframes_pruned_subsampled.txt"
 LOCAL_FEATURE_METHOD="superpoint"
-MATCHING_METHOD="lightglue+dkm"
+MATCHING_METHOD="lightglue+loftr"
 GLOBAL_FEATURE_METHOD="megaloc"
 DEVICES_REF=("spot")
 DEVICES_QUERY=("ios")

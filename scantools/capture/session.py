@@ -95,6 +95,7 @@ class Session:
                 type_ = (get_args(type_))[0]
             if attr.name in ['images', 'depths', 'pointclouds']:
                 obj = type_.load(filepath, path / cls.data_dirname)
+                # obj = type_.load(filepath, path)
             else:
                 if attr.name in ['bt', 'wifi'] and not wireless:
                     continue

@@ -14,6 +14,7 @@ class Capture:
     path: Optional[Path] = None
 
     sessions_dirname = 'sessions'
+    # sessions_dirname = 'train'
     align_dirname = 'alignment'
 
     @classmethod
