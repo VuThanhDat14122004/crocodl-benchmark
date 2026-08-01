@@ -3,6 +3,7 @@ data/
 external/ceres-solver-v2.1.0
 external/colmap_main
 external/colmap_v3.8
+external/hloc_old
 
 raybender/
 anonymization/

@@ -43,26 +43,21 @@
 This repository is a fork of the original [CroCoDL-Benchmark](https://github.com/cvg/crocodl-benchmark), extended with several enhancements for advanced visual localization benchmarking.
 
 ### Key Modifications & Additions
-- **Integration of RoMa + GIM-LightGlue into the LaMAR pipeline**:  
-  The core LaMAR benchmarking pipeline has been modified to support state-of-the-art dense feature extraction and matching using RoMa (for robust keypoint refinement) combined with GIM-LightGlue (a high-recall matcher trained on diverse data).
+- **Integration of dense match augmentation into the LaMAR pipeline**:  
+  The core LaMAR benchmarking pipeline has been extended to support multiple state-of-the-art dense matchers, including **RoMa**, **DKM**, and **LoFTR**. These matchers are used to augment sparse correspondences through dense match refinement, dense match expansion, multi-point correspondences, and global-to-local patch-wise dense matching.
 
 - **Added quick evaluation pipeline**:  
-  New end-to-end evaluation scripts and tools are provided to rapidly assess localization performance after processing with the integrated matcher models, enabling faster experimentation and result analysis.
+  New end-to-end evaluation scripts and tools are provided to rapidly assess localization performance using different dense matchers, enabling faster experimentation and quantitative comparison.
 
-This repository hosts the source code for CroCoDL, the first dataset to contain sensor recordings from real-world robots, phones, and mixed-reality headsets, covering a total of 10 challenging locations to benchmark cross-device and human-robot visual registra-tion.
-
-### Contributions
-1. The (to the best of our knowledge) largest real-world cross-device visual localization dataset, focusing on diverse capture setups and environments.
-2. A novel benchmark on cross-device visual registration that shows considerable limitations of current state-of-the-art methods.
-3. Integration of the sensor streams of Boston Dynamic’s Spot robot into LaMAR’s pseudo-GTpipeline. We will release the code for the data pre-processing and the required changes to the pipeline. 
+This repository hosts the source code for CroCoDL, the first dataset to contain sensor recordings from real-world robots, phones, and mixed-reality headsets, covering a total of 10 challenging locations to benchmark cross-device and human-robot visual registration.
 
 **This repository further contributes:**
 
-4. **Integration of modern dense matchers into the LaMAR pipeline**:  
-   Successful incorporation of **RoMa** (robust keypoint refinement) combined with **GIM-LightGlue** (high-recall dense matcher) into the core benchmarking pipeline, enabling substantially improved matching performance on cross-device data.
+4. **Integration of multiple dense matchers into the LaMAR pipeline**:  
+   Support for **RoMa**, **DKM**, and **LoFTR** within a unified dense match augmentation framework, allowing different dense matching models to be evaluated under the same benchmarking pipeline.
 
 5. **Rapid evaluation pipeline**:  
-   Addition of streamlined end-to-end evaluation scripts and tools for quick assessment of localization results after processing with the new integrated matchers, facilitating faster experimentation and quantitative analysis.
+   Addition of streamlined end-to-end evaluation scripts and tools for quick assessment of localization performance, facilitating efficient experimentation and comparison between different dense matching methods.
 
 Here is a quick breakdown of the repository:
 
